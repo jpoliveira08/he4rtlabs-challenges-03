@@ -2,48 +2,40 @@
 
 namespace Core;
 
-use Exception;
-
 /**
  * Router
  */
 class Router
 {
 
-    /**
-     * Associative array of routes (the routing table)
-     *
-     * @var array
-     */
-    protected array $routes = [];
+    /** @var array routes contains an associative array of routes (the routing table) */
+    protected $routes = [];
 
-    /**
-     * Parameters from the matched route
-     *
-     * @var array
-     */
-    protected array $params = [];
+    /** @var array $params contains parameters from the matched route */
+    protected $params = [];
 
     /**
      * Add a route to the routing table
      * 
      * @param string $route The route URL
      * @param array $params Parameters (controller, action, etc.)
+     * 
+     * @return void
      */
-    public function add($route, $params = []): void
+    public function add(string $route, array $params = []): void
     {
-        //Convert the route to a regular expression: escape forward slashes
+        // Convert the route to a regular expression: escape forward slashes
         $route = preg_replace('/\//', '\\/', $route);
 
-        //Convert variables e.g. {controller}
+        // Convert variables e.g. {controller}
         $route = preg_replace('/\{([a-z]+)\}/', '(?P<\1>[a-z-]+)', $route);
 
-        //Convert variables with custom regular exression e.g. {id:\d+}
+        // Convert variables with custom regular expressions e.g. {id:\d+}
         $route = preg_replace('/\{([a-z]+):([^\}]+)\}/', '(?P<\1>\2)', $route);
-        
-        //Add start and end delimeters, and case insensitive flag
+
+        // Add start and end delimiters, and case insensitive flag
         $route = '/^' . $route . '$/i';
-        
+
         $this->routes[$route] = $params;
     }
 
@@ -52,10 +44,20 @@ class Router
      *
      * @return array
      */
-    public function getRoutes(): array
-    {
-        return $this->routes;
-    }
+    //public function getAllRoutesFromRoutingTable(): array
+    //{
+    //    return $this->routes;
+    //}
+
+    /**
+     * Get the currently matched parameters
+     *
+     * @return array
+     */
+    //public function getMatchedParams(): array
+    //{
+    //    return $this->params;
+    //}
 
     /**
      * Match the route to the routes in the routing table, setting the $params
@@ -65,35 +67,23 @@ class Router
      *
      * @return boolean true if a match found, false otherwise
      */
-    public function match($url): bool
+    public function match(string $url): bool
     {
-        //Match to the fixed URL format /controller/action
-        //$reg_exp = "/^(?<controller>[a-z-]+)\/(?P<action>[a-z-]+)$/";
-        foreach($this->routes as $route => $params) {
+        foreach ($this->routes as $route => $params) {
             if (preg_match($route, $url, $matches)) {
-                //Get named capture group values
-                //$params = [];
-    
+                // Get named capture group values
                 foreach ($matches as $key => $match) {
                     if (is_string($key)) {
                         $params[$key] = $match;
                     }
                 }
                 $this->params = $params;
+
                 return true;
             }
         }
-        return false;
-    }
 
-    /**
-     * Get the currently matched parameters
-     *
-     * @return array
-     */
-    public function getParams(): array
-    {
-        return $this->params;
+        return false;
     }
 
     /**
@@ -104,18 +94,18 @@ class Router
      *
      * @return void
      */
-    public function dispatch($url): void
+    public function dispatch(string $url): void
     {
         $url = $this->removeQueryStringVariables($url);
 
         if ($this->match($url)) {
             $controller = $this->params['controller'];
             $controller = $this->convertToStudlyCaps($controller);
-            //$controller = "App\Controllers\\$controller";
             $controller = $this->getNamespace() . $controller;
 
             if (class_exists($controller)) {
                 $controller_object = new $controller($this->params);
+
                 $action = $this->params['action'];
                 $action = $this->convertToCamelCase($action);
 
@@ -123,13 +113,13 @@ class Router
                     $controller_object->$action();
 
                 } else {
-                    echo "Method $action (in controller $controller) not found";
+                    throw new \Exception("Method $action (in controller $controller) not found");
                 }
             } else {
-                echo "Controller class $controller not found";
+                throw new \Exception("Controller class $controller not found");
             }
         } else {
-            echo 'No route matched.';
+            throw new \Exception('No route matched.', 404);
         }
     }
 
@@ -182,17 +172,14 @@ class Router
      *
      * @return string The URL with the query string variables removed
      */
-    protected function removeQueryStringVariables($url): string
+    protected function removeQueryStringVariables(string $url): string
     {
-        if ($url != '') {
-            $parts = explode('&', $url, 2);
-
-            if (strpos($parts[0], '=') === false) {
-                $url = $parts[0];
-            } else {
-                $url = '';
-            }
+        if ($url === '') {
+            return $url;
         }
+        $parts = explode('&', $url, 2);
+
+        $url = (strpos($parts[0], '=') === false) ? $parts[0] : '';
 
         return $url;
     }
