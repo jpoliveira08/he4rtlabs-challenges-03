@@ -32,17 +32,17 @@ abstract class Controller
      *
      * @return void
      */
-    public function __call($name, $args): void
+    public function __call(string $name, array $args): void
     {
         $method = $name . 'Action';
 
-        if (!method_exists($this, $method)) {
-            echo "Method $method not found in controller " . get_class($this);
-            return;
-        }
-        if ($this->before() !== false) {
-            call_user_func_array([$this, $method], $args);
-            $this->after();
+        if (method_exists($this, $method)) {
+            if ($this->before() !== false) {
+                call_user_func_array([$this, $method], $args);
+                $this->after();
+            }
+        } else {
+            throw new \Exception("Method $method not found in controller " . get_class($this));
         }
     }
 
