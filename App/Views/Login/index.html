@@ -2,23 +2,33 @@
 
 {% block title %}Login{% endblock %}
 
-{% block head %}
-    <link rel="stylesheet" type="text/css" href="/css/login/style.css">
-{% endblock %}
-
 {% block body %}
-    <p>Test twig template {{ test }}</p>
-    Login Here
-    <form action="">
-        <input type="text" placeholder="Email Address">
-        <input type="text" placeholder="Password">
-    </form>
-    Don't have an account yet? <a>Create Account </a>
-    <br>
-    Login
+    <link rel="stylesheet" type="text/css" href="/css/login/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+
+    <div class="center">
+        <div class="box-header">
+            <h2>Login here</h2>
+            <img align="right" src="./images/he4rt-logo-black.png" alt="he4rt-logo">
+        </div>
+
+        <div class="box-body">
+            <form action="">
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" id="password"required>
+                <i class="far fa-eye" id="togglePassword"></i>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+
+
+        <p>Don't have an account yet? <a href="">Create Account</a></p>
+
+
+    </div>
 
     {% block javascripts %}
         <script src="/js/login/main.js"></script>
     {% endblock %}
-    
+
 {% endblock %}

@@ -1,3 +1,74 @@
 body {
     background-color: #ffffff;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 410px;
+    height: 235px;
+    background: #ffffff;
+    border-style: solid;
+    border-color: #000000;
+    border-width: 4px;
+    padding: 15px;
+}
+
+h2 {
+    display: inline;
+    text-align: left;
+}
+
+img{
+    width: 160px;
+    height: 50px;
+}
+
+input {
+    border: 1px solid;
+    border-radius: 25px;
+    width: 380px;
+    height: 30px;
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+#togglePassword {
+    margin-left: -30px; 
+    cursor: pointer;
+}
+
+.box-header {
+    margin-bottom: 40px;
+}
+.box-body {
+    margin-bottom: 30px;
+}
+
+p {
+    text-align: left;
+    font-size: 13px;
+    display: inline;
+}
+button {
+    width: 65px;
+    height: 40px;
+    float: right;
+    cursor: pointer;
+    color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 20px;
+    text-align: center;
+    background: #000000;
+    font-family: inherit;
+	font-size: inherit;
+	position: relative;
+}
+button:hover {
+    color: #000000;
+    background: #ffffff;
+    transition: 0.2s;
+}
+
