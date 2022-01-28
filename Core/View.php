@@ -11,27 +11,6 @@ use Twig\Loader\FilesystemLoader;
 class View
 {
     /**
-     * Render a view file
-     *
-     * @param string $view The view file
-     * @param array $args
-     *
-     * @return void
-     */
-    public static function render(string $view, $args = []): void
-    {
-        extract($args, EXTR_SKIP);
-
-        $file = "../App/Views/$view"; //relative to Core directory
-
-        if (!is_readable($file)) {
-            echo "$file not found";
-            return;
-        }
-        require $file;
-    }
-
-    /**
      * Render a view template using Twig
      *
      * @param string $template The template file
