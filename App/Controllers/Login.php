@@ -46,6 +46,9 @@ class Login extends Controller
         //    'name' => 'Dave',
         //    'colours' => ['red', 'green', 'blue']
         //]);
-        View::renderTemplate('Login/index.html');
+        View::renderTemplate('Login/index.html', [
+            'test' => 'works',
+            ]
+        );
     }
 }

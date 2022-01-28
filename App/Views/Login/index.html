@@ -2,11 +2,23 @@
 
 {% block title %}Login{% endblock %}
 
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="/css/login/style.css">
+{% endblock %}
+
 {% block body %}
-
+    <p>Test twig template {{ test }}</p>
+    Login Here
     <form action="">
-        <input type="text" placeholder="Digite o email">
-        <input type="text" placeholder="Digite a senha">
+        <input type="text" placeholder="Email Address">
+        <input type="text" placeholder="Password">
     </form>
+    Don't have an account yet? <a>Create Account </a>
+    <br>
+    Login
 
+    {% block javascripts %}
+        <script src="/js/login/main.js"></script>
+    {% endblock %}
+    
 {% endblock %}
