@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use Core\Controller;
-use Core\Model;
 use Core\View;
 
 /**
@@ -41,14 +40,7 @@ class Login extends Controller
      */
     public function indexAction(): void
     {
-        //echo 'Hello from the index action in the Home controller!';
-        //View::render('Home/index.php', [
-        //    'name' => 'Dave',
-        //    'colours' => ['red', 'green', 'blue']
-        //]);
-        View::renderTemplate('Login/index.html', [
-            'test' => 'works',
-            ]
-        );
+        View::renderTemplate('Login/index.html');
     }
+
 }

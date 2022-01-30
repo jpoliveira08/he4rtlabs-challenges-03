@@ -24,7 +24,11 @@ class View
 
         if ($twig === null) {
             $loader = new FilesystemLoader(dirname(__DIR__) . '/App/Views');
-            $twig = new Environment($loader);
+            //$twig = new Environment($loader);
+            //Just for debug
+            $twig = new Environment($loader, ['debug' => true]);
+            //Just for debug
+            $twig->addExtension(new \Twig\Extension\DebugExtension());
         }
         echo $twig->render($template, $args);
     }
