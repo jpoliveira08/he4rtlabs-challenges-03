@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controllers;
 
 use Core\Controller;
+use Core\View;
 
+/**
+ * Register Controller
+ */
 class Register extends Controller
 {
-
     /**
      * Show the register page
      *
@@ -14,6 +17,6 @@ class Register extends Controller
      */
     public function indexAction(): void
     {
-        
+        View::renderTemplate('Register/index.html');
     }
 }

@@ -1,6 +1,7 @@
 body {
-    background-color: #ffffff;
+    background-color: #9864cc;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #ffffff;
 }
 
 .center {
@@ -10,9 +11,9 @@ body {
     transform: translate(-50%, -50%);
     width: 410px;
     height: 235px;
-    background: #ffffff;
+    background: #9864cc;
     border-style: solid;
-    border-color: #000000;
+    border-color: #ffffff;
     border-width: 4px;
     padding: 15px;
 }
@@ -28,12 +29,13 @@ img{
 }
 
 input {
-    border: 1px solid;
+    border: 1px solid #ffffff;
     border-radius: 25px;
     width: 380px;
     height: 30px;
     margin-bottom: 15px;
     padding-left: 20px;
+    
 }
 #togglePassword {
     margin-left: -30px; 
@@ -53,22 +55,26 @@ p {
     display: inline;
 }
 button {
-    width: 65px;
+    width: auto;
     height: 40px;
     float: right;
     cursor: pointer;
-    color: #ffffff;
+    color: #9864cc;
     border: 1px solid;
     border-radius: 20px;
     text-align: center;
-    background: #000000;
+    background: #ffffff;
     font-family: inherit;
 	font-size: inherit;
 	position: relative;
 }
 button:hover {
-    color: #000000;
-    background: #ffffff;
+    color: #ffffff;
+    background: #9864cc;
     transition: 0.2s;
+    border-color: #ffffff;
 }
 
+#togglePassword {
+    color: #000000;
+}
