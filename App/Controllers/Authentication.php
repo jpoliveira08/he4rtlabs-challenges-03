@@ -7,22 +7,27 @@ use Core\Controller;
 use Core\View;
 use Core\Model;
 /**
- * Login controller
- * 
- * 
+ * Register Controller
  */
 class Authentication extends Controller
 {
+
+    private User $user;
     
-    /**
-     * Authentication the user
-     *
-     * @return void
-     */
+    public function __construct()
+    {
+        $this->user = new User(Model::connectionCreator());
+    }
+    
     public function authenticateAction(): void
     {
-        $user = new User(Model::connectionCreator());
-        View::renderTemplate('Login/index.html');
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        if ($this->user->authenticateUser($email, $password)) {
+            View::renderTemplate('Dashboard/index.html');
+            return;
+        }
+        View::renderTemplate('Home/login.html');
     }
-
 }
+

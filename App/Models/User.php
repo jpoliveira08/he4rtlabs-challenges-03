@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -19,18 +19,24 @@ class User extends Model
 
     public function authenticateUser(string $email, string $password): bool
     {
+        $data = $this->emailExists($email);
 
-        $query = 'SELECT * FROM users WHERE email = :email AND password = :password;';
+        if (!$data || !password_verify($password, $data['password'])) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function emailExists(string $email): array|bool
+    {
+        $query = 'SELECT * FROM users WHERE email = :email';
         $stmt = $this->connection->prepare($query);
         $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-        $stmt->bindValue(':password', $password. PDO::PARAM_STR);
-        
+
         $stmt->execute();
-        
-        if ($stmt->rowCount() > 0) {
-            return true;
-        }
-        return false;
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
     public function createUser(string $email, string $password): bool
