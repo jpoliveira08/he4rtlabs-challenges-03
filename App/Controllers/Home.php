@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use Core\Controller;
@@ -26,4 +28,5 @@ class Home extends Controller
     {
         View::renderTemplate('Home/register.html');
     }
+
 }

@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use App\Models\User;
-use Core\Controller;
-use Core\View;
-use Core\Model;
+use Core\{Controller, View, Model};
+
 /**
  * Register Controller
  */
@@ -24,10 +25,11 @@ class Authentication extends Controller
         $email = $_POST['email'];
         $password = $_POST['password'];
         if ($this->user->authenticateUser($email, $password)) {
-            View::renderTemplate('Dashboard/index.html');
-            return;
+            header("Location: /dashboard/index");
+            exit;
         }
-        View::renderTemplate('Home/login.html');
+        header("Location: /home/login");
+        exit;
     }
 }
 

@@ -24,7 +24,10 @@ class Registration extends Controller
         $email = $_POST['email'];
         $password = $_POST['password'];
         if ($this->user->createUser($email, $password)) {
-            View::renderTemplate('Home/login.html');
+            header("Location: /home/login");
+            exit;
         }
+        header("Location: /home/register");
+        exit;
     }
 }

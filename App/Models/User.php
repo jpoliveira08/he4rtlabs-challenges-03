@@ -11,24 +11,30 @@ use PDO;
 class User extends Model
 {
     private PDO $connection;
-
+    
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
     }
-
+    
     public function authenticateUser(string $email, string $password): bool
     {
         $data = $this->emailExists($email);
 
-        if (!$data || !password_verify($password, $data['password'])) {
+        if (empty($data) || !password_verify($password, $data['password'])) {
             return false;
         }
 
         return true;
     }
 
-    private function emailExists(string $email): array|bool
+    /**
+     * Check if the email exists in database
+     *
+     * @param string $email
+     * @return array
+     */
+    private function emailExists(string $email): array
     {
         $query = 'SELECT * FROM users WHERE email = :email';
         $stmt = $this->connection->prepare($query);
@@ -36,11 +42,16 @@ class User extends Model
 
         $stmt->execute();
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $rowWithUserData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return !$rowWithUserData ? [] : $rowWithUserData;
     }
     
     public function createUser(string $email, string $password): bool
     {
+        if (!empty($this->emailExists($email))) {
+            return false;
+        }
         $id = $this->generateUid();
         $password = $this->hashPassword($password);
 
