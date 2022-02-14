@@ -11,15 +11,17 @@ use PDO;
 class User extends Model
 {
     private PDO $connection;
-    
+    private Validation $validation;
+
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
+        $this->validation = new Validation($this->connection);
     }
     
     public function authenticateUser(string $email, string $password): bool
     {
-        $data = $this->emailExists($email);
+        $data = $this->validation->emailExists($email);
 
         if (empty($data) || !password_verify($password, $data['password'])) {
             return false;
@@ -27,29 +29,10 @@ class User extends Model
 
         return true;
     }
-
-    /**
-     * Check if the email exists in database
-     *
-     * @param string $email
-     * @return array
-     */
-    private function emailExists(string $email): array
-    {
-        $query = 'SELECT * FROM users WHERE email = :email';
-        $stmt = $this->connection->prepare($query);
-        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-
-        $stmt->execute();
-
-        $rowWithUserData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return !$rowWithUserData ? [] : $rowWithUserData;
-    }
     
     public function createUser(string $email, string $password): bool
     {
-        if (!empty($this->emailExists($email))) {
+        if (!empty($this->validation->emailExists($email))) {
             return false;
         }
         $id = $this->generateUid();
