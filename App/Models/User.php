@@ -19,7 +19,7 @@ class User extends Model
         $this->validation = new Validation($this->connection);
     }
     
-    public function authenticateUser(string $email, string $password): bool
+    public function authenticateUser(Email $email, string $password): bool
     {
         $data = $this->validation->emailExists($email);
 
@@ -30,7 +30,7 @@ class User extends Model
         return true;
     }
     
-    public function createUser(string $email, string $password): bool
+    public function createUser(Email $email, string $password): bool
     {
         if (!empty($this->validation->emailExists($email))) {
             return false;

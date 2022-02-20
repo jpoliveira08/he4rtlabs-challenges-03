@@ -16,6 +16,10 @@ class Session
             //Mark to be removed
             $flashMessage['remove'] = true;
         }
+
+        $_SESSION[self::FLASH_KEY] = $flashMessages;
+        error_log("----> " . json_encode(var_dump($_SESSION[self::FLASH_KEY])));
+        exit();
     }
 
     public function __destruct()

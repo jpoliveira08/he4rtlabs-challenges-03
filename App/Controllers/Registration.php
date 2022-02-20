@@ -2,18 +2,16 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
-use Core\Controller;
-use Core\View;
-use Core\Model;
+use App\Models\{User, Email};
+use Core\{Controller, Model};
+
 /**
  * Register Controller
  */
 class Registration extends Controller
 {
-
     private User $user;
-    
+
     public function __construct()
     {
         $this->user = new User(Model::connectionCreator());
@@ -21,9 +19,8 @@ class Registration extends Controller
     
     public function createAction(): void
     {
-        $email = $_POST['email'];
         $password = $_POST['password'];
-        if ($this->user->createUser($email, $password)) {
+        if ($this->user->createUser(new Email($_POST['email']), $password)) {
             header("Location: /home/login");
             exit;
         }

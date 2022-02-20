@@ -21,10 +21,10 @@ class Validation
     /**
      * Check if the email exists in database
      *
-     * @param string $email
+     * @param Email $email
      * @return array
      */
-    public function emailExists(string $email): array
+    public function emailExists(Email $email): array
     {
         $query = 'SELECT * FROM users WHERE email = :email';
         $stmt = $this->connection->prepare($query);
