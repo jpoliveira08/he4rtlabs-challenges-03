@@ -11,23 +11,29 @@ class Session
     public function __construct()
     {
         session_start();
-        $flashMessages = $_SESSION[self::FLASH_KEY] ?? []; 
-        foreach ($flashMessages as $key => $flashMessage) {
+        $flashMessages = $_SESSION[self::FLASH_KEY] ?? [];
+
+        foreach ($flashMessages as $key => &$flashMessage) {
             //Mark to be removed
             $flashMessage['remove'] = true;
         }
 
         $_SESSION[self::FLASH_KEY] = $flashMessages;
-        error_log("----> " . json_encode(var_dump($_SESSION[self::FLASH_KEY])));
-        exit();
     }
 
     public function __destruct()
     {
-        //Iterate over marked to be removed flashMessages
+        $flashMessages = $_SESSION[self::FLASH_KEY] ?? [];
+
+        foreach ($flashMessages as $key => &$flashMessage) {
+            if ($flashMessage['remove']) {
+                unset($flashMessages[$key]);
+            }
+        }
+        $_SESSION[self::FLASH_KEY] = $flashMessages;
     }
 
-    public function setFlash(string $key, string $message)
+    public function setFlash($key, $message)
     {
         $_SESSION[self::FLASH_KEY][$key] = [
             'remove' => false,
@@ -35,9 +41,9 @@ class Session
         ];
     }
 
-    public function getFlash(string $key)
+    public function getFlash($key)
     {
-
+        error_log(json_encode($_SESSION[self::FLASH_KEY]));
+        return $_SESSION[self::FLASH_KEY][$key]['value'] ?? false;
     }
-
 }

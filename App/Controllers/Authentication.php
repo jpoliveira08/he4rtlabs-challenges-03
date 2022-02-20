@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\{User, Email};
-use Core\{Controller, Session, Model};
+use Core\{Controller, Model, Session};
 
 /**
  * Register Controller
@@ -13,22 +13,20 @@ use Core\{Controller, Session, Model};
 class Authentication extends Controller
 {
     private User $user;
-    private Email $email;
-
     public function __construct()
     {
         $this->user = new User(Model::connectionCreator());
+        $this->session = new Session();
     }
 
     public function authenticateAction(): void
     {
-        $this->email = new Email($_POST['email']);
-        $password = $_POST['password'];
-        if ($this->user->authenticateUser($this->email, $password)) {
-            //(new Session)->setFlash('success', 'Login');
+        if ($this->user->authenticateUser(new Email($_POST['email']), $_POST['password'])) {
+            $this->session->setFlash('success', "Thanks for login");
             header("Location: /dashboard/index");
             exit;
         }
+        $this->session->setFlash('success', "Login error");
         header("Location: /home/login");
         exit;
     }

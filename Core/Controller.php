@@ -9,7 +9,7 @@ abstract class Controller
 {
     /** @var array $route_params contains parameters from the matched route */
     protected $route_params = [];
-
+    protected Session $session;
     /**
      * Class constructor
      *
@@ -19,6 +19,7 @@ abstract class Controller
     public function __construct(array $route_params)
     {
         $this->route_params = $route_params;
+        $this->session = new Session();
     }
 
     /**
