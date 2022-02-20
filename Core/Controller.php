@@ -9,7 +9,9 @@ abstract class Controller
 {
     /** @var array $route_params contains parameters from the matched route */
     protected $route_params = [];
+    /** @var Session $session is used to form control */
     protected Session $session;
+
     /**
      * Class constructor
      *

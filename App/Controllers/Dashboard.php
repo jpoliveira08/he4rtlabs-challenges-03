@@ -16,7 +16,7 @@ class Dashboard extends Controller
     public function indexAction(): void
     {
         View::renderTemplate('Dashboard/index.html', [
-            'teste' => $this->session->getFlash('success')
+            'successfully_logged' => $this->session->getFlash('login_success')
         ]);
     }
 }

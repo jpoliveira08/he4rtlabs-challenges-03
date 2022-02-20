@@ -16,7 +16,9 @@ class Home extends Controller
      */
     public function loginAction(): void
     {
-        View::renderTemplate('Home/login.html');
+        View::renderTemplate('Home/login.html', [
+            'invalid_credentials' => $this->session->getFlash('login_failed')
+        ]);
     }
 
     /**

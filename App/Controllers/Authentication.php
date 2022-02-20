@@ -13,20 +13,26 @@ use Core\{Controller, Model, Session};
 class Authentication extends Controller
 {
     private User $user;
+
     public function __construct()
     {
         $this->user = new User(Model::connectionCreator());
         $this->session = new Session();
     }
 
+    /**
+     * User Authentication
+     *
+     * @return void
+     */
     public function authenticateAction(): void
     {
         if ($this->user->authenticateUser(new Email($_POST['email']), $_POST['password'])) {
-            $this->session->setFlash('success', "Thanks for login");
+            $this->session->setFlash('login_success', "You have successfully logged in!");
             header("Location: /dashboard/index");
             exit;
         }
-        $this->session->setFlash('success', "Login error");
+        $this->session->setFlash('login_failed', "Invalid credentials. Please try again.");
         header("Location: /home/login");
         exit;
     }
