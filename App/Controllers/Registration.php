@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\{User, Email};
-use Core\{Controller, Model};
+use Core\{Controller, Model, Session};
 
 /**
  * Register Controller
@@ -15,6 +15,7 @@ class Registration extends Controller
     public function __construct()
     {
         $this->user = new User(Model::connectionCreator());
+        $this->session = new Session();
     }
     
     public function createAction(): void
@@ -24,6 +25,8 @@ class Registration extends Controller
             header("Location: /home/login");
             exit;
         }
+        //Validar email e password
+        $this->session->setFlash('emailAlreadyRegistered', 'Email is already registered');
         header("Location: /home/register");
         exit;
     }

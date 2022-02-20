@@ -13,6 +13,9 @@
         </div>
 
         <div class="box-body">
+            {% if emailAlreadyRegistered %}
+                {{ emailAlreadyRegistered }}
+            {% endif %}
             <form method="POST" action="/registration/create">
                 <input type="email" name="email" placeholder="Email Address">
                 <input type="password" name="password" placeholder="Password" id="password">

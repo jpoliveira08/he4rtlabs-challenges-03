@@ -28,7 +28,10 @@ class Home extends Controller
      */
     public function registerAction(): void
     {
-        View::renderTemplate('Home/register.html');
+        View::renderTemplate('Home/register.html', [
+            'emailAlreadyRegistered' => $this->session->getFlash('emailAlreadyRegistered'),
+            //'weakPassword' => $this->session->getFlash('weakPassword')
+        ]);
     }
 
 }
