@@ -43,7 +43,6 @@ class Session
 
     public function getFlash($key)
     {
-        error_log(json_encode($_SESSION[self::FLASH_KEY]));
         return $_SESSION[self::FLASH_KEY][$key]['value'] ?? false;
     }
 }

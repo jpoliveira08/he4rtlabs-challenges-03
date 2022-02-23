@@ -30,7 +30,7 @@ class Home extends Controller
     {
         View::renderTemplate('Home/register.html', [
             'emailAlreadyRegistered' => $this->session->getFlash('emailAlreadyRegistered'),
-            //'weakPassword' => $this->session->getFlash('weakPassword')
+            'commonPassword' => $this->session->getFlash('commonPassword')
         ]);
     }
 

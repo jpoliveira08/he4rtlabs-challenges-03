@@ -21,6 +21,7 @@ class User extends Model
     
     public function authenticateUser(Email $email, string $password): bool
     {
+        $this->validation->isPasswordCommon($password);
         $data = $this->validation->emailExists($email);
 
         if (empty($data) || !password_verify($password, $data['password'])) {
@@ -30,10 +31,20 @@ class User extends Model
         return true;
     }
     
-    public function createUser(Email $email, string $password): bool
+    public function createUser(Email $email, string $password): array
     {
         if (!empty($this->validation->emailExists($email))) {
-            return false;
+            return [
+                'success' => false,
+                'errorCause' => 'email'
+            ];
+        }
+
+        if ($this->validation->isPasswordCommon($password)) {
+            return [
+                'success' => false,
+                'errorCause' => 'password'
+            ];
         }
         $id = $this->generateUid();
         $password = $this->hashPassword($password);
@@ -43,8 +54,11 @@ class User extends Model
         $stmt->bindValue(':id', $id);
         $stmt->bindValue(':email', $email, PDO::PARAM_STR);
         $stmt->bindValue(':password', $password, PDO::PARAM_STR);
-        
-        return $stmt->execute();
+        $stmt->execute();
+
+        return [
+            'success' => true
+        ];
     }
 
     private function hashPassword(string $password): string
