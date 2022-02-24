@@ -20,13 +20,25 @@ class Registration extends Controller
     
     public function createAction(): void
     {
-        $password = $_POST['password'];
-        if ($this->user->createUser(new Email($_POST['email']), $password)) {
+        $userCreated = $this->user->createUser(new Email($_POST['email']), $_POST['password']);
+        if ($userCreated['success']) {
             header("Location: /home/login");
             exit;
         }
-        //Validar email e password
-        $this->session->setFlash('emailAlreadyRegistered', 'Email is already registered');
+        switch ($userCreated['errorCause']) {
+            case 'email':
+                $this->session->setFlash('emailAlreadyRegistered', 'Email is already registered');
+                $this->failRegistrationRedirect();
+                break;
+            case 'password':                    
+                $this->session->setFlash('commonPassword', 'Password is too weak or common to use');
+                $this->failRegistrationRedirect();
+                break;
+        }
+    }
+
+    private function failRegistrationRedirect(): void
+    {
         header("Location: /home/register");
         exit;
     }

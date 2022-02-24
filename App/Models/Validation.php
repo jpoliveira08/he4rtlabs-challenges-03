@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use PDO;
+use SplFileObject;
 
 /**
  * Validation information before register and login
@@ -45,14 +46,12 @@ class Validation
      */
     public function isPasswordCommon(string $password): bool
     {
-        $archive = fopen('common_passwords.txt', 'r');
-        while (!feof($archive)) {
-            $passwordFromTheList = fgets($archive);
-            if ($passwordFromTheList === $password) {
+        $commonsPasswords = new SplFileObject(__DIR__.'/common_passwords.txt');
+        foreach($commonsPasswords as $commonPassword) {
+            if (trim($commonPassword) === $password) {
                 return true;
             }
         }
-
         return false;
     }
 
