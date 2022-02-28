@@ -49,6 +49,10 @@ input {
     margin-bottom: 30px;
 }
 
+a {
+    font-weight: bold;
+}
+
 p {
     text-align: left;
     font-size: 13px;

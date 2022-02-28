@@ -1,0 +1,30 @@
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #9864cc;
+    padding: 0 1em;
+}
+
+.navbar a {
+    color: #ffffff; 
+}
+
+.navbar a:hover {
+    filter: invert(1);
+}
+
+.container {
+    display: flex;
+}
+
+img {
+    width: 10em;
+    height: 3.125em;
+}
