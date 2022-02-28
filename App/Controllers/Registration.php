@@ -2,7 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Models\{User, Email};
+use App\Models\Credentials\{Email, Password};
+use App\Models\User;
 use Core\{Controller, Model, Session};
 
 /**
@@ -20,26 +21,23 @@ class Registration extends Controller
     
     public function createAction(): void
     {
-        $userCreated = $this->user->createUser(new Email($_POST['email']), $_POST['password']);
-        if ($userCreated['success']) {
+        $userCreated = $this->user->createUser(new Email($_POST['email']), new Password($_POST['password']));
+        if (empty($userCreated['errorCause'])) {
             header("Location: /home/login");
-            exit;
+            return;
         }
-        switch ($userCreated['errorCause']) {
-            case 'email':
-                $this->session->setFlash('emailAlreadyRegistered', 'Email is already registered');
-                $this->failRegistrationRedirect();
-                break;
-            case 'password':                    
-                $this->session->setFlash('commonPassword', 'Password is too weak or common to use');
-                $this->failRegistrationRedirect();
-                break;
-        }
+        $this->redirectForFailedRegistration($userCreated['errorCause']);
     }
 
-    private function failRegistrationRedirect(): void
+    private function redirectForFailedRegistration(string $errorCause): void
     {
+        if ($errorCause === 'email') {
+            $this->session->setFlash('emailAlreadyRegistered', 'Email is already registered');
+            header("Location: /home/register");
+            return;
+        }
+        $this->session->setFlash('commonPassword', 'Password is too weak or common to use');
         header("Location: /home/register");
-        exit;
+        return;
     }
 }

@@ -4,50 +4,56 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Credentials\{Email, Password};
 use Core\Model;
-
 use PDO;
 
 class User extends Model
 {
     private PDO $connection;
-    private Validation $validation;
 
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
-        $this->validation = new Validation($this->connection);
     }
-    
-    public function authenticateUser(Email $email, string $password): bool
-    {
-        $this->validation->isPasswordCommon($password);
-        $data = $this->validation->emailExists($email);
 
-        if (empty($data) || !password_verify($password, $data['password'])) {
+    /**
+     * User authentication
+     *
+     * @param Email $email
+     * @param Password $password
+     * @return boolean
+     */
+    public function authenticateUser(Email $email, Password $password): bool
+    {
+        $data = $email->emailExists($this->connection);
+
+        if (empty($data) || !password_verify($password->withoutHash(), $data['password'])) {
             return false;
         }
 
         return true;
     }
-    
-    public function createUser(Email $email, string $password): array
+
+    /**
+     * User Registration
+     *
+     * @param Email $email
+     * @param Password $password
+     * @return array
+     */
+    public function createUser(Email $email, Password $password): array
     {
-        if (!empty($this->validation->emailExists($email))) {
-            return [
-                'success' => false,
-                'errorCause' => 'email'
-            ];
+        if ($email->emailExists($this->connection)) {
+            return ['errorCause' => 'email'];
         }
 
-        if ($this->validation->isPasswordCommon($password)) {
-            return [
-                'success' => false,
-                'errorCause' => 'password'
-            ];
+        if ($password->isCommon()) {
+            return ['errorCause' => 'password'];
         }
+
         $id = $this->generateUid();
-        $password = $this->hashPassword($password);
+        $password = $password->withHash();
 
         $query = "INSERT INTO users (id, email, password) VALUES (:id, :email, :password)";
         $stmt = $this->connection->prepare($query);
@@ -56,16 +62,14 @@ class User extends Model
         $stmt->bindValue(':password', $password, PDO::PARAM_STR);
         $stmt->execute();
 
-        return [
-            'success' => true
-        ];
+        return [];
     }
 
-    private function hashPassword(string $password): string
-    {
-        return password_hash($password, PASSWORD_BCRYPT);
-    }
-
+    /**
+     * Generating a unique id for each user
+     *
+     * @return string
+     */
     private function generateUid(): string
     {
         return uniqid();

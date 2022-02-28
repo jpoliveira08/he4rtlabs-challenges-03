@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Models\{User, Email};
+use App\Models\Credentials\{Email, Password};
+use App\Models\User;
 use Core\{Controller, Model, Session};
 
 /**
@@ -27,14 +28,14 @@ class Authentication extends Controller
      */
     public function authenticateAction(): void
     {
-        if ($this->user->authenticateUser(new Email($_POST['email']), $_POST['password'])) {
+        if ($this->user->authenticateUser(new Email($_POST['email']), new Password($_POST['password']))) {
             $this->session->setFlash('login_success', "You have successfully logged in!");
             header("Location: /dashboard/index");
-            exit;
+            return;
         }
         $this->session->setFlash('login_failed', "Invalid credentials. Please try again.");
         header("Location: /home/login");
-        exit;
+        return;
     }
 }
 
