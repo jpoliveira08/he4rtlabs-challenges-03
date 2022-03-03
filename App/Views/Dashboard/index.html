@@ -9,10 +9,15 @@
 
     <header>
         <div class="navbar">
-            <a href="#tabs"><i class="fa fa-bars" aria-hidden="true"></i></a>
+            <a id="nav-icon" onclick="divInteraction()"><i class="fa fa-bars"></i></a>
             <a href="https://heartdevs.com/" target="_blank"><img src="/images/he4rt-logo-white.png" alt="he4rt-logo"></a>
         </div>
     </header>
+
+    <div id="mySideNav" class="sidenav">
+        <a href="">Dashboard</a>
+        <a class="sign-out" href="">Sign out</a>
+    </div>
 
     <div class="container">
         Logged in
@@ -20,8 +25,7 @@
         {% if successfully_logged %}
             {{ successfully_logged }}
         {% endif %}
-        
-        
+
     </div>
 
     {% block javascripts %}
