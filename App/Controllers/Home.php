@@ -33,5 +33,4 @@ class Home extends Controller
             'commonPassword' => $this->session->getFlash('commonPassword')
         ]);
     }
-
 }

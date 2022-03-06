@@ -18,7 +18,7 @@ class Registration extends Controller
         $this->user = new User(Model::connectionCreator());
         $this->session = new Session();
     }
-    
+
     public function createAction(): void
     {
         $userCreated = $this->user->createUser(new Email($_POST['email']), new Password($_POST['password']));

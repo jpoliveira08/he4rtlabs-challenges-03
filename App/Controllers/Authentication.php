@@ -38,4 +38,3 @@ class Authentication extends Controller
         return;
     }
 }
-
