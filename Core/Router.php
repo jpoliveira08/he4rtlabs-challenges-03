@@ -7,7 +7,6 @@ namespace Core;
  */
 class Router
 {
-
     /** @var array routes contains an associative array of routes (the routing table) */
     protected $routes = [];
 
@@ -16,10 +15,10 @@ class Router
 
     /**
      * Add a route to the routing table
-     * 
+     *
      * @param string $route The route URL
      * @param array $params Parameters (controller, action, etc.)
-     * 
+     *
      * @return void
      */
     public function add(string $route, array $params = []): void
@@ -111,7 +110,6 @@ class Router
 
                 if (is_callable([$controller_object, $action])) {
                     $controller_object->$action();
-
                 } else {
                     throw new \Exception("Method $action (in controller $controller) not found");
                 }
@@ -200,5 +198,4 @@ class Router
 
         return $namespace;
     }
-
 }

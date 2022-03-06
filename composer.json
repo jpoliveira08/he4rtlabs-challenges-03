@@ -14,6 +14,6 @@
     },
     "scripts": {
         "phpcs-app": "phpcs --standard=PSR12 App/",
-        "phpcs-core": "phpcs --standard=PSR12 App/"
+        "phpcs-core": "phpcs --standard=PSR12 Core/"
     }
 }

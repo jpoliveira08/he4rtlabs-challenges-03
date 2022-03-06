@@ -7,8 +7,6 @@ use App\Config;
 
 /**
  * Base model
- * 
- * @return mixed
  */
 abstract class Model
 {

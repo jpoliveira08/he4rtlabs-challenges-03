@@ -16,7 +16,7 @@ abstract class Controller
      * Class constructor
      *
      * @param [type] $route_params Parameters from the route
-     * 
+     *
      */
     public function __construct(array $route_params)
     {
