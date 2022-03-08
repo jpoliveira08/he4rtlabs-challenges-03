@@ -6,7 +6,7 @@ namespace App\Controllers;
 
 use App\Models\Credentials\{Email, Password};
 use App\Models\User;
-use Core\{Controller, Model, Session};
+use Core\{Controller, Session};
 
 /**
  * Register Controller
@@ -17,7 +17,7 @@ class Authentication extends Controller
 
     public function __construct()
     {
-        $this->user = new User(Model::connectionCreator());
+        $this->user = new User();
         $this->session = new Session();
     }
 

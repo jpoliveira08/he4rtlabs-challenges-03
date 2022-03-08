@@ -15,7 +15,16 @@
     </header>
 
     <div id="mySideNav" class="sidenav">
-        <a href="">Dashboard</a>
+        <a href="/dashboard/index">Dashboard</a>
+        <a onclick="openReports()">
+            Reports
+            <i id="arrow" style="padding-left: 10px;" class="fa fa-arrow-down"></i>
+        </a>
+        <ul id="report-list" style="display: none;">
+            <li><a href="/dashboard/daily">Daily Report</a></li>
+            <li><a href="">Weekly Report</a></li>
+            <li><a href="">Monthly Report</a></li>
+        </ul>
         <a class="sign-out" href="">Sign out</a>
     </div>
 

@@ -12,9 +12,9 @@ class User extends Model
 {
     private PDO $connection;
 
-    public function __construct(PDO $connection)
+    public function __construct()
     {
-        $this->connection = $connection;
+        $this->connection = self::connectionCreator();
     }
 
     /**
